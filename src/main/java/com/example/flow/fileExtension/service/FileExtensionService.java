@@ -1,5 +1,6 @@
 package com.example.flow.fileExtension.service;
 
+import com.example.flow.fileExtension.code.statusCodeEnum;
 import com.example.flow.fileExtension.entity.FileExtension;
 import com.example.flow.fileExtension.repository.FileExtensionMapper;
 import lombok.RequiredArgsConstructor;
@@ -25,16 +26,15 @@ public class FileExtensionService {
     }
 
     @Transactional
-    public Map<String, Object> updateFixExtension(FileExtension fileExtension) {
+    public statusCodeEnum updateFixExtension(FileExtension fileExtension) {
         Map<String, Object> rtnMap = new HashMap<>();
         int result = extensionMapper.updateFixExtension(fileExtension);
 
         if (result < 0) {
-            rtnMap.put("code", -1);
+           return statusCodeEnum.FAIL;
         } else {
-            rtnMap.put("code", result);
+            return statusCodeEnum.SUCCESS;
         }
-        return rtnMap;
     }
 
     @Transactional

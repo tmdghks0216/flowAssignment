@@ -1,5 +1,6 @@
 package com.example.flow.fileExtension.controller;
 
+import com.example.flow.fileExtension.code.statusCodeEnum;
 import com.example.flow.fileExtension.entity.FileExtension;
 import com.example.flow.fileExtension.facade.FileExtensionFacade;
 import com.example.flow.fileExtension.service.FileExtensionService;
@@ -22,32 +23,37 @@ public class FileExtensionRestController {
     public  Map<String, Object> updateFixExtension(@RequestBody FileExtension fileExtension) {
         log.info("(updateFixExtension) RequestBody = {}", fileExtension);
 
-        return  fileExtensionService.updateFixExtension(fileExtension);
+        statusCodeEnum result = fileExtensionService.updateFixExtension(fileExtension);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("code", result.getCode());
+        response.put("msg", result.getMsg());
+
+        return  response;
     }
 
     @PostMapping("/insert/customExtension")
     public  Map<String, Object> insertCustomExtension(@RequestBody FileExtension fileExtension) {
         log.info("(insertCustomExtension) RequestBody = {}", fileExtension);
-        int result = facade.insetCustomExtension(fileExtension);
-        Map<String, Object> response = new HashMap<>();
-        response.put("code", result);
 
-        if (result == 10){
-            response.put("msg", "최대 200개까지만 등록 가능합니다.");
-        } else if (result == 11){
-            response.put("msg", "이미 등록된 확장자입니다.");
-        } else {
-            response.put("msg", "등록 성공!");
-        }
+        statusCodeEnum result = facade.insetCustomExtension(fileExtension);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("code", result.getCode());
+        response.put("msg", result.getMsg());
+
         return response;
     }
 
     @DeleteMapping("/delete/customExtension")
     public  Map<String, Object> deleteCustomExtension(@RequestBody FileExtension fileExtension) {
         log.info("(deleteCustomExtension) RequestBody = {}", fileExtension);
-        int result = fileExtensionService.deleteFileExtension(fileExtension);
+
+        fileExtensionService.deleteFileExtension(fileExtension);
+
         Map<String, Object> response = new HashMap<>();
-        response.put("code", result);
+        response.put("code", statusCodeEnum.SUCCESS.getCode());
+        response.put("msg", statusCodeEnum.SUCCESS.getMsg());
 
         return response;
     }

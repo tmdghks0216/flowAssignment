@@ -102,11 +102,11 @@
                 data: JSON.stringify(extensionData),
                 type : "post",
                 success: function(res) {
-                    if (res.code > 0) {
+                    if (res.code === 1) {
                         console.log("업데이트 되었습니다.");
-                        toastr.success('업데이트 되었습니다.');
+                        toastr.success(res.msg);
                     } else {
-                        alert("업데이트에 실패했습니다.");
+                        alert(res.msg);
                         location.reload();
                     }
                 },
@@ -201,7 +201,7 @@
                     const newCount = parseInt($count.text()) - 1;
                     $count.text(newCount >= 0 ? newCount : 0);
 
-                    toastr.info("삭제되었습니다.");
+                    toastr.info(res.msg);
                 },
                 error: function(xhr) {
                     alert("서버 통신 중 오류가 발생했습니다.");
