@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface FileExtensionMapper {
     List<FileExtension> selectFileExtensionList();
+    int updateFixExtension(FileExtension fileExtension);
 }

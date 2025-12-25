@@ -4,7 +4,9 @@ import com.example.flow.fileExtension.entity.FileExtension;
 import com.example.flow.fileExtension.repository.FileExtensionMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -20,5 +22,18 @@ public class FileExtensionService {
 
         return extensionList.stream()
                 .collect(Collectors.groupingBy(FileExtension::getType));
+    }
+
+    @Transactional
+    public Map<String, Object> updateFixExtension(FileExtension fileExtension) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        int a = extensionMapper.updateFixExtension(fileExtension);
+
+        if (a < 0) {
+            rtnMap.put("code", -1);
+        } else {
+            rtnMap.put("code", a);
+        }
+        return rtnMap;
     }
 }

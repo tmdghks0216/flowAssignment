@@ -66,5 +66,58 @@
 </div>
 
 </body>
+<script type="text/javascript">
+    $(document).ready(function() {
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "100",
+            "hideDuration": "1000",
+            "timeOut": "1500",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
 
+        // 고정 확장자 체크박스 클릭 이벤트
+        $('input[name="fixExt"]').on('change', function() {
+
+            const extension = $(this).val();
+            const isChecked = $(this).is(':checked');
+
+            const extensionData = {
+                extension : extension,
+                enable : isChecked ? 'Y' : 'N',
+                type: 'FIX'
+            }
+
+            $.ajax({
+                url: '/update/fixExtension',
+                contentType: 'application/json',
+                data: JSON.stringify(extensionData),
+                type : "post",
+                success: function(res) {
+                    if (res.code > 0) {
+                        console.log("업데이트 되었습니다.");
+                        toastr.success('업데이트 되었습니다.');
+                    } else {
+                        alert("업데이트에 실패했습니다.");
+                        location.reload();
+                    }
+                },
+                error: function(xhr) {
+                    alert("서버 통신 중 오류가 발생했습니다.");
+                    location.reload();
+                }
+            });
+        });
+    });
+</script>
 </html>

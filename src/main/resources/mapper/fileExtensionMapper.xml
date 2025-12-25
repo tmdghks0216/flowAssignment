@@ -11,4 +11,12 @@
         SELECT *
         FROM tb_file_filter
     </select>
+
+    <update id="updateFixExtension">
+        UPDATE tb_file_filter
+        SET enable = #{enable},
+            updatedt = NOW()
+        WHERE extension = #{extension}
+          AND type = 'FIX'
+    </update>
 </mapper>
