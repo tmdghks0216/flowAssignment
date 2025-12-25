@@ -8,9 +8,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/flow
-    username: root
-    password: 1234
+    url: jdbc:mysql://database-1.cfks48wwirsd.ap-northeast-2.rds.amazonaws.com:3306/flow_db
+    username: flow_test
+    password: password123!
     hikari:
       maximum-pool-size: 5
 
