@@ -27,13 +27,29 @@ public class FileExtensionService {
     @Transactional
     public Map<String, Object> updateFixExtension(FileExtension fileExtension) {
         Map<String, Object> rtnMap = new HashMap<>();
-        int a = extensionMapper.updateFixExtension(fileExtension);
+        int result = extensionMapper.updateFixExtension(fileExtension);
 
-        if (a < 0) {
+        if (result < 0) {
             rtnMap.put("code", -1);
         } else {
-            rtnMap.put("code", a);
+            rtnMap.put("code", result);
         }
         return rtnMap;
+    }
+
+    @Transactional
+    public int insertFileExtension(FileExtension fileExtension) {
+
+        return extensionMapper.insertFileExtension(fileExtension);
+    }
+
+    public int countCustomExtension() {
+
+        return extensionMapper.countCustomExtension();
+    }
+
+    public boolean isExistsExtension(FileExtension fileExtension) {
+
+        return extensionMapper.isExistsExtension(fileExtension);
     }
 }

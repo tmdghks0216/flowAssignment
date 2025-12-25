@@ -44,20 +44,18 @@
 
         <div class="row row-top">
             <div class="label"></div>
-
-            <div class="customGrid">
-                <div class="chipBox">
-                    <div class="counterInBox" id="counter">
-                        <span id="currentCount">${fn:length(customList)}</span>/200
-                    </div>
-                    <div class="chips" id="chipList">
-                        <c:forEach var="customExt" items="${customList}">
-                            <div class="chip" data-ext="${customExt.extension}">
-                                <span>${customExt.extension}</span>
-                                <button type="button" class="delete-btn">X</button>
-                            </div>
-                        </c:forEach>
-                    </div>
+            <div class="list-wrapper"> <div class="chipBox" id="chipListContainer">
+                <div class="chips" id="chipList">
+                    <c:forEach var="customExt" items="${customList}">
+                        <div class="chip" data-ext="${customExt.extension}">
+                            <span>${customExt.extension}</span>
+                            <button type="button" class="delete-btn">X</button>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
+                <div class="counterBottom">
+                    <span id="currentCount">${fn:length(customList)}</span>/200
                 </div>
             </div>
         </div>
@@ -118,6 +116,76 @@
                 }
             });
         });
+
+        //커스텀확장자 등록
+        $("#addBtn").click(function (){
+            const customExt = $("#extInput").val().toLowerCase().trim();
+            const isFixed = $('input[name="fixExt"]').get().some(el => el.value.toLowerCase() === customExt);
+
+            //공백 체크
+            if (!customExt) {
+                toastr.warning("확장자를 입력해주세요.");
+                return;
+            }
+
+            const regex = /^[a-z0-9]+$/;
+
+            if (!regex.test(customExt)) {
+                toastr.warning("확장자는 영문과 숫자만 입력할 수 있습니다.");
+                $('#extInput').val('').focus();
+                return;
+            }
+
+            //고정확장자 데이터 중복체크
+            if(isFixed){
+                toastr.warning("고정 확장자는 등록할 수 없습니다.");
+                return;
+            }
+
+            const extensionData = {
+                extension : customExt,
+                enable : 'Y',
+                type: 'CUSTOM'
+            }
+
+
+            $.ajax({
+                url: '/insert/customExtension',
+                contentType: 'application/json',
+                data: JSON.stringify(extensionData),
+                type : "post",
+                success: function(res) {
+                    if (res.code === 10) {
+                        toastr.warning(res.msg);
+                    }else if(res.code === 11){
+                        toastr.warning(res.msg);
+                    }else {
+                        addChip(customExt);
+                        $('#extInput').val('').focus();
+
+                        const $count = $('#currentCount');
+                        $count.text(parseInt($count.text()) + 1);
+
+                        toastr.info(res.msg);
+                    }
+                },
+                error: function(xhr) {
+                    alert("서버 통신 중 오류가 발생했습니다.");
+                    location.reload();
+                }
+            });
+        });
     });
+
+    function addChip(customExt) {
+        const chipHtml =
+            '<div class="chip" data-ext="' + customExt + '">' +
+            '<span>' + customExt + '</span>' +
+            '<button type="button" class="delete-btn">X</button>' +
+            '</div>';
+
+        $('#chipList').prepend(chipHtml);
+        $('#chipListContainer').scrollTop(0);
+    }
 </script>
 </html>

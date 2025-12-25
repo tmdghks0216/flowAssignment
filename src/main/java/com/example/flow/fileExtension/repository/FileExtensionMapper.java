@@ -11,4 +11,7 @@ import java.util.List;
 public interface FileExtensionMapper {
     List<FileExtension> selectFileExtensionList();
     int updateFixExtension(FileExtension fileExtension);
+    int insertFileExtension(FileExtension fileExtension);
+    int countCustomExtension();
+    boolean isExistsExtension(FileExtension fileExtension);
 }

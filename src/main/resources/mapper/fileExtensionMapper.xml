@@ -10,6 +10,7 @@
     <select id="selectFileExtensionList" resultMap="fileExtensionResult">
         SELECT *
         FROM tb_file_filter
+        ORDER BY  updateDt DESC
     </select>
 
     <update id="updateFixExtension">
@@ -19,4 +20,35 @@
         WHERE extension = #{extension}
           AND type = 'FIX'
     </update>
+
+    <insert id="insertFileExtension">
+        INSERT INTO tb_file_filter
+        (
+            extension
+            , type
+            , enable
+        )
+        VALUES
+        (
+            #{extension}
+            , #{type}
+            , #{enable}
+
+        )
+    </insert>
+
+    <select id="countCustomExtension" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM tb_file_filter
+        WHERE type = 'CUSTOM'
+    </select>
+
+    <select id="isExistsExtension" resultType="boolean">
+        SELECT EXISTS (
+            SELECT 1
+            FROM tb_file_filter
+            WHERE extension = #{extension}
+        )
+    </select>
 </mapper>
