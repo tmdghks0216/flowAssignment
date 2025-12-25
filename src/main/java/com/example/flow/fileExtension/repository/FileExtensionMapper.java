@@ -12,6 +12,7 @@ public interface FileExtensionMapper {
     List<FileExtension> selectFileExtensionList();
     int updateFixExtension(FileExtension fileExtension);
     int insertFileExtension(FileExtension fileExtension);
-    int countCustomExtension();
+    int countCustomExtension(FileExtension fileExtension);
     boolean isExistsExtension(FileExtension fileExtension);
+    int deleteFileExtension(FileExtension fileExtension);
 }

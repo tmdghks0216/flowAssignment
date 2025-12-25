@@ -14,7 +14,7 @@ public class FileExtensionFacade {
 
     public int insetCustomExtension(FileExtension fileExtension) {
         // 개수 제한 체크
-        int currentCount = fileExtensionService.countCustomExtension();
+        int currentCount = fileExtensionService.countCustomExtension(fileExtension);
 
         if(currentCount >= 200){
             log.warn("커스텀 확장자 개수 초과");

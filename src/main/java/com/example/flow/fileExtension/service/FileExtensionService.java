@@ -43,13 +43,19 @@ public class FileExtensionService {
         return extensionMapper.insertFileExtension(fileExtension);
     }
 
-    public int countCustomExtension() {
+    public int countCustomExtension(FileExtension fileExtension) {
 
-        return extensionMapper.countCustomExtension();
+        return extensionMapper.countCustomExtension(fileExtension);
     }
 
     public boolean isExistsExtension(FileExtension fileExtension) {
 
         return extensionMapper.isExistsExtension(fileExtension);
+    }
+
+    @Transactional
+    public int deleteFileExtension(FileExtension fileExtension) {
+
+        return extensionMapper.deleteFileExtension(fileExtension);
     }
 }

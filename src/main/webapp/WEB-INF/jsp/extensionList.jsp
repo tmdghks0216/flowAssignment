@@ -175,13 +175,47 @@
                 }
             });
         });
+
+        //커스텀확장자 삭제
+        $('#chipList').on('click', '.delete-btn', function() {
+            const $chip = $(this).closest('.chip');
+            const customExt = $chip.data('ext');
+
+            console.log(customExt);
+
+            const extensionData = {
+                extension : customExt,
+                type: 'CUSTOM'
+            }
+
+
+            $.ajax({
+                url: '/delete/customExtension',
+                contentType: 'application/json',
+                data: JSON.stringify(extensionData),
+                type : "delete",
+                success: function(res) {
+                    $chip.remove();
+
+                    const $count = $('#currentCount');
+                    const newCount = parseInt($count.text()) - 1;
+                    $count.text(newCount >= 0 ? newCount : 0);
+
+                    toastr.info("삭제되었습니다.");
+                },
+                error: function(xhr) {
+                    alert("서버 통신 중 오류가 발생했습니다.");
+                    location.reload();
+                }
+            });
+        });
     });
 
     function addChip(customExt) {
         const chipHtml =
             '<div class="chip" data-ext="' + customExt + '">' +
             '<span>' + customExt + '</span>' +
-            '<button type="button" class="delete-btn">X</button>' +
+            '<button type="button" class="delete-btn"">X</button>' +
             '</div>';
 
         $('#chipList').prepend(chipHtml);

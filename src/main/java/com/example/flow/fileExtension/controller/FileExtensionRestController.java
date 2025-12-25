@@ -5,10 +5,7 @@ import com.example.flow.fileExtension.facade.FileExtensionFacade;
 import com.example.flow.fileExtension.service.FileExtensionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +39,16 @@ public class FileExtensionRestController {
         } else {
             response.put("msg", "등록 성공!");
         }
+        return response;
+    }
+
+    @DeleteMapping("/delete/customExtension")
+    public  Map<String, Object> deleteCustomExtension(@RequestBody FileExtension fileExtension) {
+        log.info("(deleteCustomExtension) RequestBody = {}", fileExtension);
+        int result = fileExtensionService.deleteFileExtension(fileExtension);
+        Map<String, Object> response = new HashMap<>();
+        response.put("code", result);
+
         return response;
     }
 }

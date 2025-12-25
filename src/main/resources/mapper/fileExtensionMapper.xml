@@ -10,7 +10,7 @@
     <select id="selectFileExtensionList" resultMap="fileExtensionResult">
         SELECT *
         FROM tb_file_filter
-        ORDER BY  updateDt DESC
+        ORDER BY  createDt DESC
     </select>
 
     <update id="updateFixExtension">
@@ -41,7 +41,7 @@
         SELECT
             COUNT(*)
         FROM tb_file_filter
-        WHERE type = 'CUSTOM'
+        WHERE type = #{type}
     </select>
 
     <select id="isExistsExtension" resultType="boolean">
@@ -51,4 +51,11 @@
             WHERE extension = #{extension}
         )
     </select>
+
+    <delete id="deleteFileExtension">
+        DELETE
+        FROM tb_file_filter
+        WHERE extension = #{extension}
+            AND type = #{type}
+    </delete>
 </mapper>
