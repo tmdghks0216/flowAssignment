@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.flow.fileExtension.repository.FileExtensionMapper">
+
+    <resultMap id="fileExtensionResult" type="com.example.flow.fileExtension.entity.FileExtension"/>
+
+    <select id="selectFileExtensionList" resultMap="fileExtensionResult">
+        SELECT *
+        FROM tb_file_filter
+        ORDER BY  createDt DESC
+    </select>
+
+    <update id="updateFixExtension">
+        UPDATE tb_file_filter
+        SET enable = #{enable},
+            updatedt = NOW()
+        WHERE extension = #{extension}
+          AND type = 'FIX'
+    </update>
+
+    <insert id="insertFileExtension">
+        INSERT INTO tb_file_filter
+        (
+            extension
+            , type
+            , enable
+        )
+        VALUES
+        (
+            #{extension}
+            , #{type}
+            , #{enable}
+
+        )
+    </insert>
+
+    <select id="countCustomExtension" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM tb_file_filter
+        WHERE type = #{type}
+    </select>
+
+    <select id="isExistsExtension" resultType="boolean">
+        SELECT EXISTS (
+            SELECT 1
+            FROM tb_file_filter
+            WHERE extension = #{extension}
+        )
+    </select>
+
+    <delete id="deleteFileExtension">
+        DELETE
+        FROM tb_file_filter
+        WHERE extension = #{extension}
+            AND type = #{type}
+    </delete>
+</mapper>
